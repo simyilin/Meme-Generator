@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <form action="{{ url_for('text') }}" method="get">
+    {% for photo in photos %} 
+    <input type="radio" name="photoID" value="{{photo['id']}}">
+        <img src="{{photo['url_sq']}}" />
+    </input> 
+    <br/>
+    {% endfor %}
+    <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
