@@ -1,15 +1,36 @@
-<!DOCTYPE html>
-<html>
-  <head></head>
-  <body>
-    <form action="{{ url_for('text') }}" method="get">
-    {% for photo in photos %} 
-    <input type="radio" name="photoID" value="{{photo['id']}}">
-        <img src="{{photo['url_sq']}}" />
-    </input> 
-    <br/>
+{% extends "base.html" %} {% block head %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/picture.css') }}"
+/>
+{% endblock %} {% block content %}
+<p>Please choose an image for the meme:</p>
+<form action="{{ url_for('text') }}" method="get">
+  <div class="image-container">
+    {% for photo in photos %}
+    <img
+      id="{{photo['id']}}"
+      src="{{photo['url_m']}}"
+      onClick="updatePhotoID(this.id)"
+    />
     {% endfor %}
-    <input type="submit" value="Submit" />
-    </form>
-  </body>
-</html>
+  </div>
+  <br />
+  <input id="photoID" type="hidden" name="photoID" />
+  <div class="button-container">
+    <input class="submit-button" type="submit" value="Submit" />
+  </div>
+</form>
+
+<!-- Next page of photos from Flickr -->
+<form action="{{ url_for('picture') }}" method="get">
+  <input type="hidden" name="keyword" value="{{keyword}}" />
+  <input type="hidden" name="page" value="{{page}}" />
+  <div class="button-container">
+    <input class="submit-button" type="submit" value="Next page" />
+  </div>
+</form>
+
+<script src="{{url_for('static', filename='script/picture.js')}}"></script>
+
+{% endblock %}

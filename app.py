@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
 from flickrapi import FlickrAPI
 import urllib.request
-import os, shutil
+import os, shutil, datetime
 from PIL import Image, ImageDraw, ImageFont
 
-# To Do: Option to select text color in text.html, 
-# allow download of edited image, 
-# problem with caching of image (works fine when downloading but caching display)
+# To Do: Styling, form validation, 
+# buttons for navigation (eg go back)
+# Extras: Font size
 
 app = Flask(__name__)
 
@@ -15,46 +15,53 @@ FLICKR_SECRET = '6ab6621d8cc13c54'
 
 @app.route('/')
 def index():
-    # remove static folder
-    if os.path.exists("static"):
-        shutil.rmtree("static")
-    # re-create static folder
-    os.makedirs("static")
-    # render template with search bar
+    # remove static/images folder
+    if os.path.exists("static/images"):
+        shutil.rmtree("static/images")
+    # re-create static/images folder
+    os.makedirs("static/images")
+    
     return render_template("index.html")
 
 @app.route('/picture')
 def picture():
-    # use GET to obtain search keyword
+    # use GET to obtain search keyword and number of pics to load
     keyword = request.args.get('keyword')
+    pageNo = request.args.get('page')
 
     # output images that match keyword
     flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
     extras='url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o'
-    fetchData = flickr.photos.search(text=keyword, per_page=10, extras=extras)
-    photos = fetchData['photos']['photo']  
+    fetchData = flickr.photos.search(text=keyword, page=pageNo, per_page=10, extras=extras)
+    photos = fetchData['photos']['photo']
+
+    # update for next page
+    pageNo = int(pageNo) + 1
     
     data = {
         "keyword": keyword,
-        "photos": photos
+        "photos": photos,
+        "page": str(pageNo)
     }
     return render_template("picture.html", **data)
 
 @app.route('/text')
 def text():
-    # use GET to obtain image id
+    # use GET to obtain photo id
     photoID = request.args.get('photoID')
     flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
     fetchData = flickr.photos.getSizes(photo_id=photoID)
-    # 6 is the Medium photo option
+    # '6' is the Medium photo option
     sourceURL = fetchData["sizes"]["size"][6]["source"]
+    # use timeStamp to prevent caching
+    timeStamp = str(datetime.datetime.now().microsecond)
+    path = 'static/images/' + photoID + timeStamp + '.jpg'
     # download image
-    path = 'static/' + photoID + '.jpg'
     urllib.request.urlretrieve(sourceURL, path)
-    # option to add in text
     data = {
         "photoID": photoID,
-        "fetchData": sourceURL
+        "path": path,
+        "timeStamp": timeStamp
     }
     return render_template("text.html", **data)
 
@@ -62,23 +69,31 @@ def text():
 def result():
     # use GET to obtain text and photoID
     photoID = request.args.get('photoID')
+    textColor = request.args.get('color')
+    textPosition = request.args.get('position')
     text = request.args.get('text')
+    timeStamp = request.args.get('timeStamp')
 
-    path = 'static/' + photoID + '.jpg'
+    # add text to the image using python pillow module
+    path = 'static/images/' + photoID + timeStamp + '.jpg'
     image = Image.open(path) 
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype('arial.ttf', size=45)
     
-    # How to check which font color to use - black or white?
     width, height = image.size
     w, h = draw.textsize(text, font=font)
-    (x, y) = ((width / 2) - (w/2), 50)
-    color = 'rgb(0, 0, 0)'
+    # default to position top
+    (x, y) = ((width / 2) - (w/2), 25)
+
+    if textPosition == "middle":
+        y = (height / 2) - (h/2)
+    elif textPosition == "bottom":
+        y = height - h - 25
     
-    draw.text((x, y), text, fill=color, font=font)
+    draw.text((x, y), text, fill=textColor, font=font)
 
     image = image.convert('RGB')
-    path = 'static/' + photoID + '.jpg'
+    path = 'static/images/' + photoID + timeStamp + 'edited.jpg'
     image.save(path)
 
     data = {

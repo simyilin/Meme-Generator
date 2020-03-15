@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html>
-  <head></head>
-  <body>
-    <form action="{{ url_for('picture') }}" method="get">
-      <input type="text" name="keyword" />
-      <input type="submit" value="Submit" />
-    </form>
-  </body>
-</html>
+{% extends "base.html" %} {% block head %} {{ super() }} {% endblock %} {% block
+content %}
+<h2>Welcome to the meme generator!</h2>
+<p>Please enter a keyword to search for Flickr images:</p>
+<form action="{{ url_for('picture') }}" method="get">
+  <label for="keyword">Keyword: </label>
+  <input type="text" id="keyword" name="keyword" required /><br />
+  <input type="hidden" name="page" value="1" />
+  <input type="submit" value="Submit" />
+</form>
+{% endblock %}

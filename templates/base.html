@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% block head %}
+    <title>Meme Generator</title>
+    {% endblock %}
+  </head>
+  <body>
+    <h2>Meme Generator</h2>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <!-- <div id="footer">
+      {% block footer %} &copy; Copyright 2010 by
+      <a href="http://domain.invalid/">you</a>. {% endblock %}
+    </div> -->
+  </body>
+</html>

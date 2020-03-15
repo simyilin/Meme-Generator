@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head></head>
-  <body>
-    <img src="{{path}}" />
-    <a href="{{path}}" download>DOWNLOAD</a>
-    <a href="{{ url_for('index') }}">RETURN TO MAIN PAGE</a>
-  </body>
-</html>
+{% extends "base.html" %} {% block head %} {{ super() }} {% endblock %} {% block
+content %} <img src="{{path}}" /><br />
+<a href="{{path}}" download>DOWNLOAD</a><br />
+<a href="{{ url_for('index') }}">RETURN TO MAIN PAGE</a>
+{% endblock %}

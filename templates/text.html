@@ -1,12 +1,29 @@
-<!DOCTYPE html>
-<html>
-  <head></head>
-  <body>
-    {{fetchData}}
-    <form action="{{ url_for('result') }}" method="get">
-      <input type="text" name="text" />
-      <input type="hidden" name="photoID" value="{{photoID}}" />
-      <input type="submit" value="Submit" />
-    </form>
-  </body>
-</html>
+{% extends "base.html" %} {% block head %} {{ super() }} {% endblock %} {% block
+content %}
+<p>Chosen Image:</p>
+<img src="{{path}}" />
+<p>Please add text for the meme:</p>
+<form action="{{ url_for('result') }}" method="get">
+  <!-- Input for meme text -->
+  <label for="text">Text: </label>
+  <input type="text" id="text" name="text" />
+  <!-- Input for choosing meme text color -->
+  <label for="color">Text Color</label>
+  <select id="color" name="color">
+    <option value="white">White</option>
+    <option value="black">Black</option>
+  </select>
+  <label for="position">Text Position</label>
+  <select id="position" name="position">
+    <option value="top">Top</option>
+    <option value="middle">Middle</option>
+    <option value="bottom">Bottom</option>
+  </select>
+
+  <!-- Hidden data -->
+  <input type="hidden" name="photoID" value="{{photoID}}" />
+  <input type="hidden" name="timeStamp" value="{{timeStamp}}" />
+  <!-- Submit button -->
+  <input type="submit" value="Submit" />
+</form>
+{% endblock %}

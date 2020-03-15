@@ -1,0 +1,26 @@
+img {
+  width: 80%;
+  margin: 5%;
+}
+
+.selectedImg {
+  border: 2px blue solid;
+  transform: scale(1.05);
+}
+
+.image-container {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  grid-template-rows: auto;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.submit-button {
+  width: 15%;
+  font-size: 150%;
+}
