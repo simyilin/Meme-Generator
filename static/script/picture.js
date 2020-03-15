@@ -6,3 +6,11 @@ function updatePhotoID(id) {
   var chosenImg = document.getElementById(id);
   chosenImg.classList.add("selectedImg");
 }
+
+function checkInput() {
+  var hiddenInput = document.getElementById("photoID");
+  if (hiddenInput.value === "none") {
+    alert("Please choose an image!");
+    return false;
+  }
+}

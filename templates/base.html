@@ -3,11 +3,22 @@
   <head>
     {% block head %}
     <title>Meme Generator</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
     {% endblock %}
   </head>
   <body>
-    <h2>Meme Generator</h2>
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div class="header">
+      <h2 class="header-title">MEME GENERATOR</h2>
+      <hr />
+    </div>
+    <div class="content">{% block content %}{% endblock %}</div>
     <!-- <div id="footer">
       {% block footer %} &copy; Copyright 2010 by
       <a href="http://domain.invalid/">you</a>. {% endblock %}

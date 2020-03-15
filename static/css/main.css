@@ -1,0 +1,98 @@
+.header {
+  color: #ffffff;
+  background: #000238;
+  padding: 1%;
+}
+
+.header-title {
+  letter-spacing: 5px;
+  text-align: center;
+}
+
+.content {
+  min-height: 70vh;
+  height: 100%;
+  text-align: center;
+  padding: 2%;
+  background: rgb(0, 2, 56);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 2, 56, 1) 0%,
+    rgba(9, 66, 121, 0.7011846975118172) 50%,
+    rgba(0, 212, 255, 0.6731734930300245) 100%
+  );
+  background-size: cover;
+  color: rgb(0, 2, 56);
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 120%;
+}
+
+form {
+  padding: 1%;
+}
+
+input {
+  margin: 1%;
+}
+
+label {
+  color: white;
+}
+
+.input-text {
+  padding: 5px;
+}
+
+button {
+  padding: 5px;
+  border-radius: 8px;
+  width: 100%;
+  font-size: 100%;
+}
+
+button:hover {
+  transform: scale(1.05);
+  transition: 200ms;
+  cursor: pointer;
+  background-color: rgb(218, 218, 218);
+}
+
+.submit-button {
+  width: 10%;
+  margin: 2%;
+  padding: 5px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.hover-effect:hover {
+  box-sizing: border-box;
+  transition: 200ms;
+  border: 2px solid #001990;
+}
+
+.submit-button:hover {
+  transform: scale(1.05);
+  transition: 200ms;
+  cursor: pointer;
+  background-color: rgb(218, 218, 218);
+}
+
+.navigation-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  line-height: 50px;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: rgb(97, 171, 255);
+}

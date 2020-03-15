@@ -1,17 +1,23 @@
 img {
-  width: 80%;
-  margin: 5%;
+  width: 180px;
+  margin: 10px;
+}
+
+img:hover {
+  transform: scale(1.05);
+  transition: 200ms;
+  cursor: pointer;
 }
 
 .selectedImg {
-  border: 2px blue solid;
-  transform: scale(1.05);
+  outline: 3px solid #fffc64;
 }
 
 .image-container {
-  display: grid;
-  grid-template-columns: repeat(5, auto);
-  grid-template-rows: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .button-container {
@@ -20,7 +26,20 @@ img {
   justify-content: center;
 }
 
-.submit-button {
-  width: 15%;
-  font-size: 150%;
+.arrow {
+  width: 40px;
+  padding: 20px;
+}
+
+.arrow:hover {
+  transform: scale(1.1);
+}
+
+.arrow-disabled {
+  visibility: hidden;
+}
+
+.arrow-container {
+  width: 100%;
+  display: block;
 }

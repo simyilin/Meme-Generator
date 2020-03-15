@@ -5,32 +5,65 @@
 />
 {% endblock %} {% block content %}
 <p>Please choose an image for the meme:</p>
-<form action="{{ url_for('text') }}" method="get">
+<form
+  action="{{ url_for('text') }}"
+  method="get"
+  onSubmit="return checkInput()"
+>
   <div class="image-container">
     {% for photo in photos %}
     <img
       id="{{photo['id']}}"
-      src="{{photo['url_m']}}"
+      src="{{photo['url_q']}}"
       onClick="updatePhotoID(this.id)"
     />
     {% endfor %}
+    <div class="arrow-container">
+      <img
+        id="arrow-left"
+        class="arrow"
+        src="static/arrow-left.png"
+        onClick="movePage('back')"
+      />
+      <img
+        id="arrow-right"
+        class="arrow"
+        src="static/arrow-right.png"
+        onClick="movePage('forward')"
+      />
+    </div>
   </div>
   <br />
-  <input id="photoID" type="hidden" name="photoID" />
-  <div class="button-container">
-    <input class="submit-button" type="submit" value="Submit" />
-  </div>
-</form>
-
-<!-- Next page of photos from Flickr -->
-<form action="{{ url_for('picture') }}" method="get">
+  <input id="photoID" type="hidden" name="photoID" value="none" />
   <input type="hidden" name="keyword" value="{{keyword}}" />
-  <input type="hidden" name="page" value="{{page}}" />
-  <div class="button-container">
-    <input class="submit-button" type="submit" value="Next page" />
-  </div>
+  <input class="submit-button" type="submit" value="Submit" />
 </form>
+<a href="{{ url_for('index') }}">Return to Main Page</a>
 
 <script src="{{url_for('static', filename='script/picture.js')}}"></script>
+<script>
+  function movePage(direction) {
+    var newPage = 1;
+    if (direction === "back") {
+      newPage = parseInt("{{page}}") - 1;
+    } else if (direction === "forward") {
+      newPage = parseInt("{{page}}") + 1;
+    }
+
+    let path = "./picture?keyword={{keyword}}&page=".concat(newPage);
+    window.location.href = path;
+  }
+
+  // Disable arrow buttons if page is 1 or 100
+  window.addEventListener("load", function() {
+    if ("{{page}}" === "1") {
+      var leftArrow = document.getElementById("arrow-left");
+      leftArrow.classList.add("arrow-disabled");
+    } else if ("{{page}}" === "100") {
+      var rightArrow = document.getElementById("arrow-right");
+      rightArrow.classList.add("arrow-disabled");
+    }
+  });
+</script>
 
 {% endblock %}

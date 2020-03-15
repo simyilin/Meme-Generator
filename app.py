@@ -4,9 +4,7 @@ import urllib.request
 import os, shutil, datetime
 from PIL import Image, ImageDraw, ImageFont
 
-# To Do: Styling, form validation, 
-# buttons for navigation (eg go back)
-# Extras: Font size
+# To Do: Code cleanup, animations and testing
 
 app = Flask(__name__)
 
@@ -27,16 +25,13 @@ def index():
 def picture():
     # use GET to obtain search keyword and number of pics to load
     keyword = request.args.get('keyword')
-    pageNo = request.args.get('page')
+    pageNo = (request.args.get('page') or 1)
 
     # output images that match keyword
     flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
     extras='url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o'
     fetchData = flickr.photos.search(text=keyword, page=pageNo, per_page=10, extras=extras)
     photos = fetchData['photos']['photo']
-
-    # update for next page
-    pageNo = int(pageNo) + 1
     
     data = {
         "keyword": keyword,
@@ -47,6 +42,12 @@ def picture():
 
 @app.route('/text')
 def text():
+    # check if there is a valid photo id
+    if not request.args.get('photoID'):
+        return render_template("picture.html")
+
+    keyword = request.args.get('keyword')
+
     # use GET to obtain photo id
     photoID = request.args.get('photoID')
     flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
@@ -58,10 +59,18 @@ def text():
     path = 'static/images/' + photoID + timeStamp + '.jpg'
     # download image
     urllib.request.urlretrieve(sourceURL, path)
+    # find out size of image and limit text input length
+    path = 'static/images/' + photoID + timeStamp + '.jpg'
+    image = Image.open(path) 
+    width, height = image.size
+    limit = int(width/45)
+
     data = {
         "photoID": photoID,
         "path": path,
-        "timeStamp": timeStamp
+        "timeStamp": timeStamp,
+        "keyword": keyword, 
+        "limit": limit
     }
     return render_template("text.html", **data)
 
