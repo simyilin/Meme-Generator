@@ -30,7 +30,9 @@ def picture():
     # output images that match keyword
     flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
     # fetches data using Flickr API
-    fetchData = flickr.photos.search(text=keyword, page=pageNo, per_page=10, extras='url_q')
+    fetchData = flickr.photos.search(text=keyword, sort='relevance', 
+    safe_search=1, content_type=1, page=pageNo, 
+    per_page=10, extras='url_q')
     photos = fetchData['photos']['photo']
     
     data = {
