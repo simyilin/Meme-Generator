@@ -1,5 +1,6 @@
 {% extends "base.html" %} {% block head %} {{ super() }} {% endblock %} {% block
 content %} <img src="{{path}}" /><br />
 <a href="{{path}}" download>DOWNLOAD</a><br />
+<a href="./text?photoID={{photoID}}&keyword={{keyword}}">CHANGE TEXT</a><br />
 <a href="{{ url_for('index') }}">RETURN TO MAIN PAGE</a>
 {% endblock %}

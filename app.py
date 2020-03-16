@@ -2,9 +2,11 @@ from flask import Flask, render_template, request
 from flickrapi import FlickrAPI
 import urllib.request
 import os, shutil, datetime
+import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 app = Flask(__name__)
+port = int(os.environ.get('PORT', 5000))
 
 FLICKR_PUBLIC = '58828f5f5d114133ebc1d053cca2028c'
 FLICKR_SECRET = '6ab6621d8cc13c54'
@@ -69,8 +71,9 @@ def text():
 
 @app.route('/result')
 def result():
-    # use GET to obtain photoID and timeStamp
+    # use GET to obtain photoID, keyword and timeStamp
     photoID = request.args.get('photoID')
+    keyword = request.args.get('keyword')
     timeStamp = request.args.get('timeStamp')
     # use GET to meme text and text settings
     text = request.args.get('text')
@@ -81,19 +84,25 @@ def result():
     path = 'static/images/' + photoID + timeStamp + '.jpg'
     image = Image.open(path) 
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('arial.ttf', size=45)
+    font = ImageFont.truetype('static/Anton-Regular.ttf', size=45)
     
     width, height = image.size
     w, h = draw.textsize(text, font=font)
+    limit = int(width/30)
 
     # text position settings, default to position of top
-    (x, y) = ((width / 2) - (w/2), 25)
+    (x, y) = ((width / 2), 25)
     if textPosition == "middle":
         y = (height / 2) - (h/2)
     elif textPosition == "bottom":
-        y = height - h - 25
+        additionalOffset = w / width * h
+        y = height - h - additionalOffset - 25    
     
-    draw.text((x, y), text, fill=textColor, font=font)
+    # wrap text
+    for line in textwrap.wrap(text, width=limit):  
+        x = (width / 2) - (font.getsize(line)[0]/2 )
+        draw.text((x, y), line, font=font, fill=textColor)
+        y += font.getsize(line)[1]
 
     # converts image to 'RGB' format and saves it
     image = image.convert('RGB')
@@ -101,9 +110,11 @@ def result():
     image.save(path)
 
     data = {
-        "path": path
+        "path": path,
+        "keyword": keyword,
+        "photoID": photoID
     }
     return render_template("result.html", **data)
 
 if __name__ == '__main__':
-   app.run(debug=True)
+   app.run(host='0.0.0.0', port=port, debug=True)
