@@ -18,26 +18,26 @@
       onClick="updatePhotoID(this.id)"
     />
     {% endfor %}
-    <div class="arrow-container">
-      <img
-        id="arrow-left"
-        class="arrow"
-        src="static/arrow-left.png"
-        onClick="movePage('back')"
-      />
-      <img
-        id="arrow-right"
-        class="arrow"
-        src="static/arrow-right.png"
-        onClick="movePage('forward')"
-      />
-    </div>
   </div>
   <br />
   <input id="photoID" type="hidden" name="photoID" value="none" />
   <input type="hidden" name="keyword" value="{{keyword}}" />
   <input class="submit-button" type="submit" value="Submit" />
 </form>
+<div class="arrow-container">
+  <img
+    id="arrow-left"
+    class="arrow"
+    src="static/arrow-left.png"
+    onClick="movePage('back')"
+  />
+  <img
+    id="arrow-right"
+    class="arrow"
+    src="static/arrow-right.png"
+    onClick="movePage('forward')"
+  />
+</div>
 <a href="{{ url_for('index') }}">Return to Main Page</a>
 
 <script src="{{url_for('static', filename='script/picture.js')}}"></script>
