@@ -1,7 +1,9 @@
-.header {
+header {
+  font-size: 100%;
   color: #ffffff;
   background: #000238;
   padding: 1%;
+  min-height: 15vh;
 }
 
 .header-title {
@@ -54,7 +56,9 @@ button,
 }
 
 button:hover,
-.submit-button:hover {
+.submit-button:hover,
+button:focus,
+.submit-button:focus {
   transform: scale(1.05);
   transition: 200ms;
   cursor: pointer;
@@ -79,9 +83,14 @@ a:hover {
   color: rgb(97, 171, 255);
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 700px) {
   button,
   .submit-button {
+    font-size: 80%;
     padding: 2%;
+  }
+
+  body {
+    font-size: 150%;
   }
 }

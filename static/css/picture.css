@@ -3,7 +3,8 @@ img {
   margin: 10px;
 }
 
-img:hover {
+img:hover,
+img:focus {
   transform: scale(1.05);
   transition: 200ms;
   cursor: pointer;
@@ -31,7 +32,8 @@ img:hover {
   padding: 20px;
 }
 
-.arrow:hover {
+.arrow:hover,
+.arrow:focus {
   transform: scale(1.1);
 }
 
@@ -42,4 +44,11 @@ img:hover {
 .arrow-container {
   width: 100%;
   display: block;
+}
+
+@media only screen and (max-width: 700px) {
+  .arrow {
+    width: 15%;
+    padding: 20px;
+  }
 }

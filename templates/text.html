@@ -4,7 +4,7 @@
   href="{{ url_for('static', filename='css/text.css') }}"
 />{% endblock %} {% block content %}
 <p>Chosen Image:</p>
-<img src="{{path}}" />
+<img alt="chosen image" src="{{path}}" />
 <p>Please add text for the meme</p>
 <form action="{{ url_for('result') }}" method="get">
   <!-- Input for meme text -->

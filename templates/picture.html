@@ -13,6 +13,8 @@
   <div class="image-container">
     {% for photo in photos %}
     <img
+      tabindex="0"
+      alt="{{keyword}} picture"
       id="{{photo['id']}}"
       src="{{photo['url_q']}}"
       onClick="updatePhotoID(this.id)"
@@ -22,26 +24,29 @@
   <br />
   <input id="photoID" type="hidden" name="photoID" value="none" />
   <input type="hidden" name="keyword" value="{{keyword}}" />
-  <input class="submit-button" type="submit" value="Submit" />
+  <input tabindex="0" class="submit-button" type="submit" value="Submit" />
 </form>
 <div class="arrow-container">
   <img
+    tabindex="0"
     id="arrow-left"
     class="arrow"
     src="static/arrow-left.png"
     onClick="movePage('back')"
   />
   <img
+    tabindex="0"
     id="arrow-right"
     class="arrow"
     src="static/arrow-right.png"
     onClick="movePage('forward')"
   />
 </div>
-<a href="{{ url_for('index') }}">Return to Main Page</a>
+<a tabindex="0" href="{{ url_for('index') }}">Return to Main Page</a>
 
 <script src="{{url_for('static', filename='script/picture.js')}}"></script>
 <script>
+  // Changes to new page when left/right buttons are clicked
   function movePage(direction) {
     var newPage = 1;
     if (direction === "back") {

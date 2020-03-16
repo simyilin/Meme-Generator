@@ -12,4 +12,8 @@ img {
   .input-container {
     display: block;
   }
+
+  img {
+    width: 50%;
+  }
 }
