@@ -8,27 +8,33 @@
 <p>Please add text for the meme</p>
 <form action="{{ url_for('result') }}" method="get">
   <!-- Input for meme text -->
-  <label for="text">Text: </label>
-  <input
-    class="input-text hover-effect"
-    type="text"
-    id="text"
-    name="text"
-    maxlength="{{limit}}"
-    required
-  />
-  <!-- Input for choosing meme text color -->
-  <label for="color">Text Color:</label>
-  <select class="input-text" id="color" name="color">
-    <option value="white">White</option>
-    <option value="black">Black</option>
-  </select>
-  <label for="position">Text Position:</label>
-  <select class="input-text" id="position" name="position">
-    <option value="top">Top</option>
-    <option value="middle">Middle</option>
-    <option value="bottom">Bottom</option>
-  </select>
+  <div class="input-container">
+    <label for="text">Text: </label>
+    <input
+      class="input-text hover-effect"
+      type="text"
+      id="text"
+      name="text"
+      maxlength="{{limit}}"
+      required
+    />
+  </div>
+  <!-- Input for choosing meme text color and position -->
+  <div class="input-container">
+    <label for="color">Text Color:</label>
+    <select class="input-text" id="color" name="color">
+      <option value="white">White</option>
+      <option value="black">Black</option>
+    </select>
+  </div>
+  <div class="input-container">
+    <label for="position">Text Position:</label>
+    <select class="input-text" id="position" name="position">
+      <option value="top">Top</option>
+      <option value="middle">Middle</option>
+      <option value="bottom">Bottom</option>
+    </select>
+  </div>
   <br />
 
   <!-- Hidden data -->

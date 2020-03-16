@@ -4,8 +4,6 @@ import urllib.request
 import os, shutil, datetime
 from PIL import Image, ImageDraw, ImageFont
 
-# To Do: Code cleanup, animations and testing
-
 app = Flask(__name__)
 
 FLICKR_PUBLIC = '58828f5f5d114133ebc1d053cca2028c'
@@ -23,14 +21,14 @@ def index():
 
 @app.route('/picture')
 def picture():
-    # use GET to obtain search keyword and number of pics to load
+    # use GET to obtain search keyword and page number (if available)
     keyword = request.args.get('keyword')
     pageNo = (request.args.get('page') or 1)
 
     # output images that match keyword
     flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
-    extras='url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o'
-    fetchData = flickr.photos.search(text=keyword, page=pageNo, per_page=10, extras=extras)
+    # fetches data using Flickr API
+    fetchData = flickr.photos.search(text=keyword, page=pageNo, per_page=10, extras='url_q')
     photos = fetchData['photos']['photo']
     
     data = {
@@ -42,14 +40,10 @@ def picture():
 
 @app.route('/text')
 def text():
-    # check if there is a valid photo id
-    if not request.args.get('photoID'):
-        return render_template("picture.html")
-
-    keyword = request.args.get('keyword')
-
-    # use GET to obtain photo id
+    # use GET to obtain photo id and keyword
     photoID = request.args.get('photoID')
+    keyword = request.args.get('keyword')
+    # use Flickr API to obtain image static url
     flickr = FlickrAPI(FLICKR_PUBLIC, FLICKR_SECRET, format='parsed-json')
     fetchData = flickr.photos.getSizes(photo_id=photoID)
     # '6' is the Medium photo option
@@ -60,28 +54,28 @@ def text():
     # download image
     urllib.request.urlretrieve(sourceURL, path)
     # find out size of image and limit text input length
-    path = 'static/images/' + photoID + timeStamp + '.jpg'
     image = Image.open(path) 
     width, height = image.size
     limit = int(width/45)
 
     data = {
         "photoID": photoID,
+        "keyword": keyword,
         "path": path,
         "timeStamp": timeStamp,
-        "keyword": keyword, 
         "limit": limit
     }
     return render_template("text.html", **data)
 
 @app.route('/result')
 def result():
-    # use GET to obtain text and photoID
+    # use GET to obtain photoID and timeStamp
     photoID = request.args.get('photoID')
+    timeStamp = request.args.get('timeStamp')
+    # use GET to meme text and text settings
+    text = request.args.get('text')
     textColor = request.args.get('color')
     textPosition = request.args.get('position')
-    text = request.args.get('text')
-    timeStamp = request.args.get('timeStamp')
 
     # add text to the image using python pillow module
     path = 'static/images/' + photoID + timeStamp + '.jpg'
@@ -91,9 +85,9 @@ def result():
     
     width, height = image.size
     w, h = draw.textsize(text, font=font)
-    # default to position top
-    (x, y) = ((width / 2) - (w/2), 25)
 
+    # text position settings, default to position of top
+    (x, y) = ((width / 2) - (w/2), 25)
     if textPosition == "middle":
         y = (height / 2) - (h/2)
     elif textPosition == "bottom":
@@ -101,6 +95,7 @@ def result():
     
     draw.text((x, y), text, fill=textColor, font=font)
 
+    # converts image to 'RGB' format and saves it
     image = image.convert('RGB')
     path = 'static/images/' + photoID + timeStamp + 'edited.jpg'
     image.save(path)
