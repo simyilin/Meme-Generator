@@ -1,9 +1,8 @@
-header {
+.header {
   font-size: 100%;
   color: #ffffff;
   background: #000238;
   padding: 1%;
-  min-height: 15vh;
 }
 
 .header-title {
