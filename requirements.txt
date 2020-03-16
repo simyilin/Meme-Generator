@@ -2,3 +2,4 @@ flask
 flickrapi
 requests
 pillow
+gunicorn

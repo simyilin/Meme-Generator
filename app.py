@@ -11,7 +11,7 @@ port = int(os.environ.get('PORT', 5000))
 FLICKR_PUBLIC = '58828f5f5d114133ebc1d053cca2028c'
 FLICKR_SECRET = '6ab6621d8cc13c54'
 
-@app.route('/')
+@app.route('/index')
 def index():
     # remove static/images folder
     if os.path.exists("static/images"):
